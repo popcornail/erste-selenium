@@ -5,6 +5,7 @@ import hu.robertszujo.seleniumproject.constants.TestContextConstants;
 import hu.robertszujo.seleniumproject.reporter.ReporterSetup;
 import hu.robertszujo.seleniumproject.webdriver.ChromeDriverOptions;
 import hu.robertszujo.seleniumproject.webdriver.WebDriverSetup;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.ITestContext;
@@ -27,9 +28,14 @@ public class BaseTestClass {
 
     @BeforeMethod(alwaysRun = true)
     public void baseBeforeMethod(ITestContext context, ITestResult result) {
+        WebDriverManager.chromedriver()
+                .driverVersion("144.0.7559.71")
+                .setup();
+
         driver = new ChromeDriver(new ChromeDriverOptions().getChromeDriverOptions());
         context.setAttribute(TestContextConstants.DRIVER, driver);
     }
+
 
     @AfterMethod(alwaysRun = true)
     public void baseAfterMethod() {
