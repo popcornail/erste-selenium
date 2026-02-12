@@ -9,13 +9,19 @@ import org.openqa.selenium.support.FindBy;
 
 public class LoanMaximumCalculatorPage extends BasePageObject {
 
-    // === LOCATORS ===
+    //LOCATORS
+
+    //Cookie
+    @FindBy(css = "div[id='popin_tc_privacy']")
+    private WebElement cookiePopup;
+    @FindBy(css = "button[id='popin_tc_privacy_button']")
+    private WebElement acceptButton;
 
     // Basic data
     @FindBy(id = "ingatlan_erteke")
     private WebElement propertyValueInput;
     @FindBy(id = "ingatlan_erteke_error")
-    private WebElement PropertyValueError;
+    private WebElement propertyValueError;
 
     @FindBy(id = "meletkor")
     private WebElement ageInput;
@@ -32,13 +38,13 @@ public class LoanMaximumCalculatorPage extends BasePageObject {
     @FindBy(id = "mjovedelem")
     private WebElement householdIncomeInput;
     @FindBy(id = "mjovedelem_error")
-    private WebElement HouseholdIncomeError;
+    private WebElement householdIncomeError;
 
     // Existing loans
     @FindBy(id = "meglevo_torleszto")
     private WebElement existingLoanInstallmentInput;
     @FindBy(id = "meglevo_torleszto_error")
-    private WebElement ExistingLoanInstallmentError;
+    private WebElement existingLoanInstallmentError;
 
     @FindBy(id = "folyoszamla")
     private WebElement creditLimitInput;
@@ -133,5 +139,162 @@ public class LoanMaximumCalculatorPage extends BasePageObject {
 
     private void selectCalculateButton(){
         waitAndClickButton(calculateButton, "Button for calculating results");
+    }
+
+    // Error checking
+    public boolean hasAgeError() {
+        try {
+            return ageError.isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public String getAgeErrorMessage() {
+        try {
+            ElementActions.waitForElementToBeDisplayed(ageError, driver);
+            return ageError.getText();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public boolean hasPropertyValueError() {
+        try {
+            return propertyValueError.isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public String getPropertyValueErrorMessage() {
+        try {
+            ElementActions.waitForElementToBeDisplayed(propertyValueError, driver);
+            return propertyValueError.getText();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public boolean hasHouseholdIncomeError() {
+        try {
+            return householdIncomeError.isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public String getHouseholdIncomeErrorMessage() {
+        try {
+            ElementActions.waitForElementToBeDisplayed(householdIncomeError, driver);
+            return householdIncomeError.getText();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public boolean hasExistingLoanError() {
+        try {
+            return existingLoanInstallmentError.isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public String getExistingLoanErrorMessage() {
+        try {
+            ElementActions.waitForElementToBeDisplayed(existingLoanInstallmentError, driver);
+            return existingLoanInstallmentError.getText();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public boolean hasAnyError() {
+        return hasAgeError() || hasPropertyValueError() ||
+                hasHouseholdIncomeError() || hasExistingLoanError();
+    }
+
+    //10 yrs get results
+
+    public String getMaxLoanAmount1() {
+        try {
+            ElementActions.waitForElementToBeDisplayed(maxLoanAmount1, driver);
+            return maxLoanAmount1.getText();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public String getTHMValue1() {
+        try {
+            ElementActions.waitForElementToBeDisplayed(thmValue1, driver);
+            return thmValue1.getText();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    //20 yrs get results
+
+    public String getMaxLoanAmount2() {
+        try {
+            ElementActions.waitForElementToBeDisplayed(maxLoanAmount2, driver);
+            return maxLoanAmount2.getText();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public String getTHMValue2() {
+        try {
+            ElementActions.waitForElementToBeDisplayed(thmValue2, driver);
+            return thmValue2.getText();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    //Results check
+
+    public boolean isResultDisplayed() {
+        try {
+            return maxLoanAmount1.isDisplayed() && maxLoanAmount2.isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean areAllResultsDisplayed() {
+        try {
+            return maxLoanAmount1.isDisplayed() &&
+                    maxLoanAmount2.isDisplayed() &&
+                    thmValue1.isDisplayed() &&
+                    thmValue2.isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    //Checkbox state checks
+
+    public boolean isRegularIncomeChecked() {
+        return regularIncomeCheckbox.isSelected();
+    }
+
+    public boolean isBabyExpectingChecked() {
+        return babyExpectingCheckbox.isSelected();
+    }
+
+    public boolean isLoanProtectionInsuranceChecked() {
+        return loanProtectionInsuranceCheckbox.isSelected();
+    }
+
+    public boolean isRegularIncomeAmountEnabled() {
+        try {
+            return regularIncomeAmountInput.isEnabled();
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
