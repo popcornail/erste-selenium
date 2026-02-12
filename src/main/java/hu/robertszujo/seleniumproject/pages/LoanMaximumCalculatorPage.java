@@ -1,7 +1,6 @@
 package hu.robertszujo.seleniumproject.pages;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import com.aventstack.extentreports.ExtentTest;
 import hu.robertszujo.seleniumproject.utils.ElementActions;
 import org.openqa.selenium.support.FindBy;
@@ -11,11 +10,14 @@ public class LoanMaximumCalculatorPage extends BasePageObject {
 
     //LOCATORS
 
+    @FindBy(css = "div[class='content_hitelmaximum']")
+    private WebElement calculatorForm;
+
     //Cookie
     @FindBy(css = "div[id='popin_tc_privacy']")
     private WebElement cookiePopup;
     @FindBy(css = "button[id='popin_tc_privacy_button']")
-    private WebElement acceptButton;
+    private WebElement cookieAcceptButton;
 
     // Basic data
     @FindBy(id = "ingatlan_erteke")
@@ -65,6 +67,8 @@ public class LoanMaximumCalculatorPage extends BasePageObject {
     // Button
     @FindBy(css = ".btn.btn-orange.mennyit_kaphatok")
     private WebElement calculateButton;
+    @FindBy(id = "nem_tudunk_kalkulalni")
+    private WebElement callbackButton;
 
     //Max Loan
     @FindBy(id = "box_1_max_desktop")
@@ -125,20 +129,62 @@ public class LoanMaximumCalculatorPage extends BasePageObject {
         waitAndSetInput(creditLimitInput, String.valueOf(limit), "Credit card limit");
     }
 
-    public void checkRegularIncomeCheckbox() {
-        waitAndClickButton(regularIncomeCheckbox, "Regular income checkbox");
+    public void selectRegularIncomeCheckbox() {
+        ElementActions.waitForElementToBeDisplayed(regularIncomeCheckbox, driver);
+        reporter.info("Clicking regular income checkbox");
+
+        if (!isRegularIncomeChecked()) {
+            regularIncomeCheckbox.click();
+            try {
+                ElementActions.waitForElementToBeDisplayed(regularIncomeAmountInput, driver);
+                reporter.info("Regular income amount field is now visible");
+            } catch (TimeoutException e) {
+                reporter.warning("Regular income amount field did not appear");
+            }
+        }
+
+        reporter.info("Regular income checkbox checked: " + isRegularIncomeChecked());
     }
 
-    public void setRegularIncome(int regularIncome){
-        waitAndSetInput(regularIncomeAmountInput, String.valueOf(regularIncome), "Regular income amount");
+    public void setRegularIncome(int regularIncome) {
+        try {
+            regularIncomeAmountInput.clear();
+            regularIncomeAmountInput.sendKeys(String.valueOf(regularIncome));
+            reporter.info("Regular income amount set to: " + regularIncome);
+        } catch (Exception e) {
+            reporter.fail("Regular income amount field is not visible! Checkbox must be checked first.");
+            throw e;
+        }
     }
 
     public void selectBabyExpectingCheckbox(){
         waitAndClickButton(babyExpectingCheckbox, "Baby expecting checkbox");
     }
 
-    private void selectCalculateButton(){
-        waitAndClickButton(calculateButton, "Button for calculating results");
+    public void selectLoanProtectionInsuranceCheckbox(){
+        waitAndClickButton(loanProtectionInsuranceCheckbox, "Baby expecting checkbox");
+    }
+
+    public boolean isCalculateButtonVisible() {
+        try {
+            return calculateButton.isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public void clickCalculate() {
+        if (isCalculateButtonVisible()) {
+            ElementActions.waitForElementToBeDisplayed(calculateButton, driver);
+            reporter.info("Clicking on the calculate button");
+            calculateButton.click();
+            reporter.info("Calculate button clicked");
+        } else if (isCallbackButtonVisible()) {
+            reporter.warning("Cannot calculate - Callback button is shown (age > 65)");
+        } else {
+            reporter.fail("No button found!");
+            throw new NoSuchElementException("Calculate or callback button not found");
+        }
     }
 
     // Error checking
@@ -146,6 +192,18 @@ public class LoanMaximumCalculatorPage extends BasePageObject {
         try {
             return ageError.isDisplayed();
         } catch (Exception e) {
+            return false;
+        }
+    }
+    public void waitForCalculatorFormToBeDisplayed() {
+        reporter.info("Waiting for calculator form to be displayed");
+        ElementActions.waitForElementToBeDisplayed(calculatorForm, driver);
+    }
+    public boolean isCalculatorFormDisplayedAfterWaiting() {
+        try {
+            waitForCalculatorFormToBeDisplayed();
+            return true;
+        } catch (TimeoutException e) {
             return false;
         }
     }
@@ -264,7 +322,24 @@ public class LoanMaximumCalculatorPage extends BasePageObject {
             return false;
         }
     }
-
+    public boolean isCallbackButtonVisible() {
+        ElementActions.waitForElementToBeDisplayed(callbackButton, driver);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", callbackButton);
+        try {
+            return callbackButton.isDisplayed();
+        } catch (TimeoutException e) {
+            return false;
+        }
+    }
+    public void waitForResultsToLoad() {
+        try {
+            // Wait for at least one result box
+            ElementActions.waitForElementToBeDisplayed(maxLoanAmount1, driver);
+            reporter.info("Results loaded successfully");
+        } catch (Exception e) {
+            reporter.warning("Results did not load in time");
+        }
+    }
     public boolean areAllResultsDisplayed() {
         try {
             return maxLoanAmount1.isDisplayed() &&
