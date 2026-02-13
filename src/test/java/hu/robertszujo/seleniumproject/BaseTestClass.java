@@ -54,5 +54,5 @@ public class BaseTestClass {
     @AfterSuite(alwaysRun = true)
     public void baseAfterSuite() {
         SuiteWideStorage.testReport.flush();
-    };
+    }
 }
