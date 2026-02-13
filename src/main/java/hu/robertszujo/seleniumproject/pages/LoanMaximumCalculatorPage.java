@@ -13,12 +13,6 @@ public class LoanMaximumCalculatorPage extends BasePageObject {
     @FindBy(css = "div[class='content_hitelmaximum']")
     private WebElement calculatorForm;
 
-    //Cookie
-    @FindBy(css = "div[id='popin_tc_privacy']")
-    private WebElement cookiePopup;
-    @FindBy(css = "button[id='popin_tc_privacy_button']")
-    private WebElement cookieAcceptButton;
-
     // Basic data
     @FindBy(id = "ingatlan_erteke")
     private WebElement propertyValueInput;
@@ -75,11 +69,18 @@ public class LoanMaximumCalculatorPage extends BasePageObject {
     private WebElement maxLoanAmount1;
     @FindBy(id = "box_2_max_desktop")
     private WebElement maxLoanAmount2;
+
     // THM
     @FindBy(id = "box_1_thm")
     private WebElement thmValue1;
     @FindBy(id = "box_2_thm")
     private WebElement thmValue2;
+
+    //Monthly installment
+    @FindBy(id = "box_1_torleszto")
+    private WebElement monthlyInstallment1;
+    @FindBy(id="box_2_torleszto")
+    private WebElement monthlyInstallment2;
 
 
     public LoanMaximumCalculatorPage(WebDriver driver, ExtentTest reporter) {
@@ -273,46 +274,6 @@ public class LoanMaximumCalculatorPage extends BasePageObject {
                 hasHouseholdIncomeError() || hasExistingLoanError();
     }
 
-    //10 yrs get results
-
-    public String getMaxLoanAmount1() {
-        try {
-            ElementActions.waitForElementToBeDisplayed(maxLoanAmount1, driver);
-            return maxLoanAmount1.getText();
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    public String getTHMValue1() {
-        try {
-            ElementActions.waitForElementToBeDisplayed(thmValue1, driver);
-            return thmValue1.getText();
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    //20 yrs get results
-
-    public String getMaxLoanAmount2() {
-        try {
-            ElementActions.waitForElementToBeDisplayed(maxLoanAmount2, driver);
-            return maxLoanAmount2.getText();
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    public String getTHMValue2() {
-        try {
-            ElementActions.waitForElementToBeDisplayed(thmValue2, driver);
-            return thmValue2.getText();
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
     //Results check
 
     public boolean isResultDisplayed() {
@@ -365,11 +326,91 @@ public class LoanMaximumCalculatorPage extends BasePageObject {
         return loanProtectionInsuranceCheckbox.isSelected();
     }
 
-    public boolean isRegularIncomeAmountEnabled() {
+    // *** RESULT GETTERS - BOX 1 (10 year interest period) ***
+
+    public int getBox1LoanAmount() {
         try {
-            return regularIncomeAmountInput.isEnabled();
+            WebElement element = driver.findElement(By.id("box_1_max_desktop"));
+            ElementActions.waitForElementToBeDisplayed(element, driver);
+            String text = element.getText().trim();
+            return Integer.parseInt(text.replaceAll("\\s+", ""));
         } catch (Exception e) {
+            reporter.warning("Could not get Box 1 loan amount");
+            return 0;
+        }
+    }
+
+
+
+    public int getBox1MonthlyInstallment() {
+        try {
+            ElementActions.waitForElementToBeDisplayed(monthlyInstallment1, driver);
+            return Integer.parseInt(monthlyInstallment1.getText());
+        } catch (Exception e) {
+            reporter.warning("Could not get Box 1 monthly installment");
+            return 0;
+        }
+    }
+
+    public double getBox1THM() {
+        try {
+            ElementActions.waitForElementToBeDisplayed(thmValue1, driver);
+            String text = thmValue1.getText();
+            // "7,33" → 7.33
+            return Double.parseDouble(text.replace(",", "."));
+        } catch (Exception e) {
+            reporter.warning("Could not get Box 1 THM");
+            return 0.0;
+        }
+    }
+
+
+// === RESULT GETTERS - BOX 2 (20 year fixed interest) ===
+
+    public int getBox2LoanAmount() {
+        try {
+            WebElement element = driver.findElement(By.id("box_2_max_desktop"));
+            ElementActions.waitForElementToBeDisplayed(element, driver);
+            String text = element.getText().trim();
+            return Integer.parseInt(text.replaceAll("\\s+", ""));
+        } catch (Exception e) {
+            reporter.warning("Could not get Box 2 loan amount");
+            return 0;
+        }
+    }
+
+    public int getBox2MonthlyInstallment() {
+        try {
+            ElementActions.waitForElementToBeDisplayed(monthlyInstallment2, driver);
+            return Integer.parseInt(monthlyInstallment2.getText());
+        } catch (Exception e) {
+            reporter.warning("Could not get Box 2 monthly installment");
+            return 0;
+        }
+    }
+
+    public double getBox2THM() {
+        try {
+            ElementActions.waitForElementToBeDisplayed(thmValue2, driver);
+            String text = thmValue2.getText();
+            return Double.parseDouble(text.replace(",", "."));
+        } catch (Exception e) {
+            reporter.warning("Could not get Box 2 THM");
+            return 0.0;
+        }
+    }
+
+
+// *** HELPER METHOD ***
+
+    public boolean hasCalculationResult() {
+        try {
+            ElementActions.waitForElementToBeDisplayed(maxLoanAmount1, driver);
+            return maxLoanAmount1.isDisplayed() && maxLoanAmount2.isDisplayed();
+        } catch (TimeoutException e) {
             return false;
         }
     }
+
+
 }
