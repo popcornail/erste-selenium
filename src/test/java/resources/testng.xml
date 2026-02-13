@@ -1,13 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Loan Maximum Calculator Test Suite">
+    <test name="Cookie Tests">
+        <classes>
+            <class name="hu.robertszujo.seleniumproject.LoanMaximumCalculatorCookieTests"/>
+        </classes>
+    </test>
 
-<suite name="George Regression" verbose="10" thread-count="4">
-    <listeners>
-        <listener class-name="hu.robertszujo.seleniumproject.TestListener"/>
-    </listeners>
-    <test name="Suite with listener" preserve-order="true" parallel="classes" verbose="1">
-        <packages>
-            <package name="hu.robertszujo.seleniumproject.*"/>
-        </packages>
+    <test name="Positive Tests">
+        <classes>
+            <class name="hu.robertszujo.seleniumproject.LoanMaximumCalculatorPositiveTests"/>
+        </classes>
+    </test>
+
+    <test name="Age Validation Tests">
+        <classes>
+            <class name="hu.robertszujo.seleniumproject.LoanMaximumCalculatorAgeValidationTests"/>
+        </classes>
+    </test>
+
+    <test name="Property Validation Tests">
+        <classes>
+            <class name="hu.robertszujo.seleniumproject.LoanMaximumCalculatorPropertyValidationTests"/>
+        </classes>
+    </test>
+
+    <test name="Income Validation Tests">
+        <classes>
+            <class name="hu.robertszujo.seleniumproject.LoanMaximumCalculatorIncomeValidationTests"/>
+        </classes>
+    </test>
+
+    <test name="Installment Tests">
+        <classes>
+            <class name="hu.robertszujo.seleniumproject.LoanMaximumCalculatorInstallmentTests"/>
+        </classes>
+    </test>
+
+    <test name="Checkbox Tests">
+        <classes>
+            <class name="hu.robertszujo.seleniumproject.LoanMaximumCalculatorCheckboxTests"/>
+        </classes>
+    </test>
+
+    <test name="Property Value Tests">
+        <classes>
+            <class name="hu.robertszujo.seleniumproject.LoanMaximumCalculatorPropertyValueTests"/>
+        </classes>
+    </test>
+
+    <test name="Debt Tests">
+        <classes>
+            <class name="hu.robertszujo.seleniumproject.LoanMaximumCalculatorDebtTests"/>
+        </classes>
+    </test>
+
+    <test name="Insurance Tests">
+        <classes>
+            <class name="hu.robertszujo.seleniumproject.LoanMaximumCalculatorInsuranceTests"/>
+        </classes>
     </test>
 </suite>

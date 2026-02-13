@@ -1,7 +1,9 @@
 package hu.robertszujo.seleniumproject;
 
 import com.aventstack.extentreports.ExtentReports;
+import hu.robertszujo.seleniumproject.constants.TestConstants;
 import hu.robertszujo.seleniumproject.constants.TestContextConstants;
+import hu.robertszujo.seleniumproject.pages.components.CookiePopup;
 import hu.robertszujo.seleniumproject.reporter.ReporterSetup;
 import hu.robertszujo.seleniumproject.webdriver.ChromeDriverOptions;
 import hu.robertszujo.seleniumproject.webdriver.WebDriverSetup;
@@ -18,6 +20,13 @@ import org.testng.annotations.BeforeSuite;
 public class BaseTestClass {
 
     protected WebDriver driver;
+
+    protected void loadPageAndAcceptCookies(CookiePopup cookiePopup) {
+        driver.get(TestConstants.MAXCALCULATOR_PAGE_URL);
+        cookiePopup.waitForCookiePopupToBeDisplayed();
+        cookiePopup.clickOnCookieAcceptButton();
+        cookiePopup.waitForCookiePopupToDisappear();
+    }
 
     @BeforeSuite(alwaysRun = true)
     public void baseBeforeSuite() {
