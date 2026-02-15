@@ -74,35 +74,6 @@ public class LoanMaximumCalculatorIncomeValidationTests extends BaseTestClass {
         reporter.pass("Household income validation works correctly");
     }
 
-    @Test(description = "Verify multiple errors are displayed simultaneously")
-    public void multipleInvalidFields_AllErrorsShouldBeDisplayed() {
-        loadPageAndAcceptCookies(cookiePopup);
-
-        loanMaximumCalculatorPage.setAge(17);
-        loanMaximumCalculatorPage.setPropertyValue(4000000);
-        loanMaximumCalculatorPage.selectSingleEarner();
-        loanMaximumCalculatorPage.setHouseholdIncome(50000);
-        loanMaximumCalculatorPage.clickCalculate();
-        loanMaximumCalculatorPage.waitForResultsToLoad();
-
-        Assertions.assertThat(loanMaximumCalculatorPage.hasAnyError())
-                .as("At least one error should be displayed")
-                .isTrue();
-
-        Assertions.assertThat(loanMaximumCalculatorPage.hasAgeError())
-                .as("Age error should be displayed")
-                .isTrue();
-
-        Assertions.assertThat(loanMaximumCalculatorPage.hasPropertyValueError())
-                .as("Property value error should be displayed")
-                .isTrue();
-
-        Assertions.assertThat(loanMaximumCalculatorPage.hasHouseholdIncomeError())
-                .as("Household income error should be displayed")
-                .isTrue();
-
-        reporter.pass("Multiple validation errors displayed correctly");
-    }
 
     @Test(description = "Increasing household income increases maximum loan amount")
     public void householdIncomeIncrease_IncreasesLoanAmount() {

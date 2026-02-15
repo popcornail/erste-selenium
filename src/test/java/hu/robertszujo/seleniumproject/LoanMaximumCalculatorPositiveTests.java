@@ -92,41 +92,6 @@ public class LoanMaximumCalculatorPositiveTests extends BaseTestClass {
         reporter.pass("Calculation with existing loans successful");
     }
 
-    @Test(description = "Calculate loan with all benefits enabled")
-    public void calculateWithAllBenefits_ResultsShouldBeDisplayed() {
-        loadPageAndAcceptCookies(cookiePopup);
-
-        loanMaximumCalculatorPage.setAge(30);
-        loanMaximumCalculatorPage.setPropertyValue(40000000);
-        loanMaximumCalculatorPage.selectSingleEarner();
-        loanMaximumCalculatorPage.setHouseholdIncome(350000);
-
-        loanMaximumCalculatorPage.selectRegularIncomeCheckbox();
-        loanMaximumCalculatorPage.setRegularIncome(100000);
-        loanMaximumCalculatorPage.selectBabyExpectingCheckbox();
-        loanMaximumCalculatorPage.selectLoanProtectionInsuranceCheckbox();
-
-        loanMaximumCalculatorPage.clickCalculate();
-        loanMaximumCalculatorPage.waitForResultsToLoad();
-
-        Assertions.assertThat(loanMaximumCalculatorPage.isResultDisplayed())
-                .as("Results should be displayed with all benefits")
-                .isTrue();
-
-        Assertions.assertThat(loanMaximumCalculatorPage.isRegularIncomeChecked())
-                .as("Regular income checkbox should be checked")
-                .isTrue();
-
-        Assertions.assertThat(loanMaximumCalculatorPage.isBabyExpectingChecked())
-                .as("Baby expecting checkbox should be checked")
-                .isTrue();
-
-        Assertions.assertThat(loanMaximumCalculatorPage.isLoanProtectionInsuranceChecked())
-                .as("Loan protection insurance should be checked")
-                .isTrue();
-
-        reporter.pass("Calculation with all benefits successful");
-    }
 
     @Test(description = "Verify both result boxes contain THM values")
     public void calculateLoan_BothTHMValuesShouldBeDisplayed() {

@@ -19,9 +19,9 @@
         </classes>
     </test>
 
-    <test name="Property Validation Tests">
+    <test name="Error Messages Test">
         <classes>
-            <class name="hu.robertszujo.seleniumproject.LoanMaximumCalculatorPropertyValidationTests"/>
+            <class name="hu.robertszujo.seleniumproject.LoanMaximumCalculatorErrorMsgTests"/>
         </classes>
     </test>
 
