@@ -277,14 +277,6 @@ public class LoanMaximumCalculatorPage extends BasePageObject {
         }
     }
 
-    public String getExistingLoanErrorMessage() {
-        try {
-            ElementActions.waitForElementToBeDisplayed(existingLoanInstallmentError, driver);
-            return existingLoanInstallmentError.getText();
-        } catch (Exception e) {
-            return null;
-        }
-    }
 
     public boolean hasAnyError() {
         return hasAgeError() || hasPropertyValueError() ||
@@ -364,7 +356,9 @@ public class LoanMaximumCalculatorPage extends BasePageObject {
     public int getBox1MonthlyInstallment() {
         try {
             ElementActions.waitForElementToBeDisplayed(monthlyInstallment1, driver);
-            return Integer.parseInt(monthlyInstallment1.getText());
+            String text = monthlyInstallment1.getText().trim();
+            String cleanedText = text.replaceAll("\\s+", "").replace("Ft", "");
+            return Integer.parseInt(cleanedText);
         } catch (Exception e) {
             reporter.warning("Could not get Box 1 monthly installment");
             return 0;
@@ -401,7 +395,9 @@ public class LoanMaximumCalculatorPage extends BasePageObject {
     public int getBox2MonthlyInstallment() {
         try {
             ElementActions.waitForElementToBeDisplayed(monthlyInstallment2, driver);
-            return Integer.parseInt(monthlyInstallment2.getText());
+            String text = monthlyInstallment2.getText().trim();
+            String cleanedText = text.replaceAll("\\s+", "").replace("Ft", "");
+            return Integer.parseInt(cleanedText);
         } catch (Exception e) {
             reporter.warning("Could not get Box 2 monthly installment");
             return 0;
