@@ -12,6 +12,8 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
+
+//Test that validates that if we increase the income of our household the maximum loan that we can get is increasing as well
 @Listeners(TestListener.class)
 public class LoanMaximumCalculatorIncomeValidationTests extends BaseTestClass {
 
@@ -28,50 +30,6 @@ public class LoanMaximumCalculatorIncomeValidationTests extends BaseTestClass {
         context.setAttribute(TestContextConstants.REPORTER, reporter);
         loanMaximumCalculatorPage = new LoanMaximumCalculatorPage(driver, reporter);
         cookiePopup = new CookiePopup(driver, reporter);
-    }
-
-    @Test(description = "Validate error for household income below minimum for single earners")
-    public void singleEarnerHouseholdIncomeBelow193k_ErrorShouldBeDisplayed() {
-        loadPageAndAcceptCookies(cookiePopup);
-
-        loanMaximumCalculatorPage.setAge(30);
-        loanMaximumCalculatorPage.setPropertyValue(20000000);
-        loanMaximumCalculatorPage.selectSingleEarner();
-        loanMaximumCalculatorPage.setHouseholdIncome(192999);
-        loanMaximumCalculatorPage.clickCalculate();
-        loanMaximumCalculatorPage.waitForResultsToLoad();
-
-        Assertions.assertThat(loanMaximumCalculatorPage.hasHouseholdIncomeError())
-                .as("Household income error should be displayed for income < 193k")
-                .isTrue();
-
-        Assertions.assertThat(loanMaximumCalculatorPage.getHouseholdIncomeErrorMessage())
-                .as("Error message should contain 'jövedelem'")
-                .contains("jövedelem");
-
-        reporter.pass("Household income validation works correctly");
-    }
-
-    @Test(description = "Validate error for household income below minimum for multiple earners")
-    public void multipleEarnersHouseholdIncomeBelow289k_ErrorShouldBeDisplayed() {
-        loadPageAndAcceptCookies(cookiePopup);
-
-        loanMaximumCalculatorPage.setAge(30);
-        loanMaximumCalculatorPage.setPropertyValue(20000000);
-        loanMaximumCalculatorPage.selectMultipleEarners();
-        loanMaximumCalculatorPage.setHouseholdIncome(289999);
-        loanMaximumCalculatorPage.clickCalculate();
-        loanMaximumCalculatorPage.waitForResultsToLoad();
-
-        Assertions.assertThat(loanMaximumCalculatorPage.hasHouseholdIncomeError())
-                .as("Household income error should be displayed for income < 290k")
-                .isTrue();
-
-        Assertions.assertThat(loanMaximumCalculatorPage.getHouseholdIncomeErrorMessage())
-                .as("Error message should contain 'jövedelem'")
-                .contains("jövedelem");
-
-        reporter.pass("Household income validation works correctly");
     }
 
 

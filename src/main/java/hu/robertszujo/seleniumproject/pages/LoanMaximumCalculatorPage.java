@@ -14,23 +14,30 @@ public class LoanMaximumCalculatorPage extends BasePageObject {
     private WebElement calculatorForm;
 
     // Basic data
+
+    //Value of property
     @FindBy(id = "ingatlan_erteke")
     private WebElement propertyValueInput;
     @FindBy(id = "ingatlan_erteke_error")
     private WebElement propertyValueError;
 
+    //Field for providing age
     @FindBy(id = "meletkor")
     private WebElement ageInput;
     @FindBy(id = "eletkor_error")
     private WebElement ageError;
 
     // Household
+
+    //Button for choosing that you are a single earner
     @FindBy(id = "egyedul")
     private WebElement singleEarnerButton;
 
+    //Button for choosing that there are more earners in the household
     @FindBy(id = "tobben")
     private WebElement multipleEarnersButton;
 
+    //Field for household income
     @FindBy(id = "mjovedelem")
     private WebElement householdIncomeInput;
     @FindBy(id = "mjovedelem_error")
@@ -42,29 +49,35 @@ public class LoanMaximumCalculatorPage extends BasePageObject {
     @FindBy(id = "meglevo_torleszto_error")
     private WebElement existingLoanInstallmentError;
 
+    //Credit card limit
     @FindBy(id = "folyoszamla")
     private WebElement creditLimitInput;
 
     // Benefits / Discounts
+
+    //Button for choosing that you have a monthly income to your Erste card
     @FindBy(id = "kedvezmeny_jovairasm")
     private WebElement regularIncomeCheckbox;
 
+    //Field for specifying how much is your monthly income for your Erste card
     @FindBy(id = "jovairasm")
     private WebElement regularIncomeAmountInput;
 
+    //Button to choose that you want a "Baby Expecting" loan as well
     @FindBy(id = "kedvezmeny_babavarom")
     private WebElement babyExpectingCheckbox;
 
+    //Button for choosing that you want loan protection
     @FindBy(id = "kedvezmeny_biztositasm")
     private WebElement loanProtectionInsuranceCheckbox;
 
-    // Button
+    //The calculate button
     @FindBy(css = ".btn.btn-orange.mennyit_kaphatok")
     private WebElement calculateButton;
     @FindBy(id = "nem_tudunk_kalkulalni")
     private WebElement callbackButton;
 
-    //Max Loan
+    //Max Loan that you can get
     @FindBy(id = "box_1_max_desktop")
     private WebElement maxLoanAmount1;
     @FindBy(id = "box_2_max_desktop")
@@ -82,11 +95,12 @@ public class LoanMaximumCalculatorPage extends BasePageObject {
     @FindBy(id="box_2_torleszto")
     private WebElement monthlyInstallment2;
 
-
+    //Page Object
     public LoanMaximumCalculatorPage(WebDriver driver, ExtentTest reporter) {
         super(driver, reporter);
     }
 
+    //Function that waits for an element to be present in the DOM and fills the field with the given input
     private void waitAndSetInput(WebElement element, String value, String fieldName) {
         ElementActions.waitForElementToBeDisplayed(element, driver);
         reporter.info("Waiting for " + fieldName + " field to be displayed");
@@ -95,6 +109,7 @@ public class LoanMaximumCalculatorPage extends BasePageObject {
         reporter.info(fieldName + " set to: " + value);
     }
 
+    //Function that waits for an element to be present in the DOM and clicks on the element
     private void waitAndClickButton(WebElement element, String buttonName) {
         ElementActions.waitForElementToBeDisplayed(element, driver);
         reporter.info("Waiting for " + buttonName + " button to be displayed");
@@ -130,6 +145,7 @@ public class LoanMaximumCalculatorPage extends BasePageObject {
         waitAndSetInput(creditLimitInput, String.valueOf(limit), "Credit card limit");
     }
 
+    //Function that checks the regular income checkbox first and checks that the corresponding field to appeared
     public void selectRegularIncomeCheckbox() {
         ElementActions.waitForElementToBeDisplayed(regularIncomeCheckbox, driver);
         reporter.info("Clicking regular income checkbox");
@@ -174,6 +190,7 @@ public class LoanMaximumCalculatorPage extends BasePageObject {
         }
     }
 
+    //Function that clicks on the calculate button but after it checks if the callback button is in its place instead
     public void clickCalculate() {
         if (isCalculateButtonVisible()) {
             ElementActions.waitForElementToBeDisplayed(calculateButton, driver);
@@ -276,6 +293,7 @@ public class LoanMaximumCalculatorPage extends BasePageObject {
 
     //Results check
 
+    //Function that checks if the calculation results are present
     public boolean isResultDisplayed() {
         try {
             return maxLoanAmount1.isDisplayed() && maxLoanAmount2.isDisplayed();
@@ -283,6 +301,7 @@ public class LoanMaximumCalculatorPage extends BasePageObject {
             return false;
         }
     }
+
     public boolean isCallbackButtonVisible() {
         ElementActions.waitForElementToBeDisplayed(callbackButton, driver);
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", callbackButton);
@@ -352,11 +371,11 @@ public class LoanMaximumCalculatorPage extends BasePageObject {
         }
     }
 
+    //Function that gets the value of the THM element, converting it into floating point format, if it fails, returns 0
     public double getBox1THM() {
         try {
             ElementActions.waitForElementToBeDisplayed(thmValue1, driver);
             String text = thmValue1.getText();
-            // "7,33" → 7.33
             return Double.parseDouble(text.replace(",", "."));
         } catch (Exception e) {
             reporter.warning("Could not get Box 1 THM");

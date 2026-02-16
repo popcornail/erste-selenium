@@ -11,6 +11,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
+//Tests that are validating that the monthly installment should not exceed certain percentages
 @Listeners(TestListener.class)
 public class LoanMaximumCalculatorInstallmentTests extends BaseTestClass {
 

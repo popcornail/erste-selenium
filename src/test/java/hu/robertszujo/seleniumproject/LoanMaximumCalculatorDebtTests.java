@@ -12,6 +12,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
+//Test that checks if we increase our existing loan amount, the maximum loan we can get is decreasing
 @Listeners(TestListener.class)
 public class LoanMaximumCalculatorDebtTests extends BaseTestClass {
 

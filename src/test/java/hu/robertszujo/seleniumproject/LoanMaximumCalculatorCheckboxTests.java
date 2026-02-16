@@ -11,6 +11,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
+//Tests that are validating the proper working of the checkboxes
 @Listeners(TestListener.class)
 public class LoanMaximumCalculatorCheckboxTests extends BaseTestClass {
 

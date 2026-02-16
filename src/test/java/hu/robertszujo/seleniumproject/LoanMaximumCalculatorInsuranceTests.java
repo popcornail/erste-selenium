@@ -12,6 +12,8 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
+
+//Test that checks if we tick the loan protection checkbox also decreases the THM value in the calculated results
 @Listeners(TestListener.class)
 public class LoanMaximumCalculatorInsuranceTests extends BaseTestClass {
 

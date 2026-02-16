@@ -12,6 +12,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
+//Tests that are validating the cookie popup
 @Listeners(TestListener.class)
 public class LoanMaximumCalculatorCookieTests extends BaseTestClass {
 

@@ -11,6 +11,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
+//Positive tests with values within boundaries
 @Listeners(TestListener.class)
 public class LoanMaximumCalculatorPositiveTests extends BaseTestClass {
 
@@ -71,6 +72,24 @@ public class LoanMaximumCalculatorPositiveTests extends BaseTestClass {
                 .as("Results should be displayed for multiple earners")
                 .isTrue();
         reporter.pass("Calculation with multiple earners successful");
+    }
+
+    @Test(description = "Verify property value boundary - 5 million should be valid")
+    public void propertyValue5Million_ShouldBeValid() {
+        loadPageAndAcceptCookies(cookiePopup);
+
+        loanMaximumCalculatorPage.setAge(30);
+        loanMaximumCalculatorPage.setPropertyValue(5000000);
+        loanMaximumCalculatorPage.selectSingleEarner();
+        loanMaximumCalculatorPage.setHouseholdIncome(200000);
+        loanMaximumCalculatorPage.clickCalculate();
+        loanMaximumCalculatorPage.waitForResultsToLoad();
+
+        Assertions.assertThat(loanMaximumCalculatorPage.hasPropertyValueError())
+                .as("Property value error should NOT be displayed for value = 5M")
+                .isFalse();
+
+        reporter.pass("Property value boundary validation works correctly");
     }
 
     @Test(description = "Calculate loan with existing loans")
